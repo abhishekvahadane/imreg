@@ -106,15 +106,14 @@ class Residual(Metric):
 
         grad = np.gradient(warpedImage)
 
-        dIx = grad[1].flatten()
-        dIy = grad[0].flatten()
+        dIx = grad[1].flat
+        dIy = grad[0].flat
 
         dPx, dPy = model.jacobian(p)
-
-        J = np.zeros_like(dPx)
-        for index in range(0, dPx.shape[1]):
-            J[:, index] = dPx[:, index] * dIx + dPy[:, index] * dIy
-        return J
+    
+        J = (dPx.T * dIx) + (dPy.T * dIy)
+        return J.T
+        
 
     def error(self, warpedImage, template):
         """
